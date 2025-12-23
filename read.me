@@ -1,0 +1,66 @@
+SMS Spam Detection
+Project Overview
+This project aims to build a robust SMS spam detection system using natural language processing (NLP) techniques and a Multinomial Naive Bayes classifier. The goal is to accurately classify incoming SMS messages as either 'ham' (legitimate) or 'spam' (unwanted).
+
+Dataset
+The dataset used is spam.csv, which contains SMS messages labeled as 'ham' or 'spam'.
+
+Project Steps
+1. Data Loading and Initial Cleaning
+The spam.csv file was loaded into a pandas DataFrame using latin1 encoding due to character issues.
+Unnecessary columns (Unnamed: 2, Unnamed: 3, Unnamed: 4) were dropped.
+Columns v1 and v2 were renamed to labels and data respectively for clarity.
+2. Label Preparation
+The labels column ('ham'/'spam') was converted into a binary numerical format (0 for 'ham', 1 for 'spam') using pd.get_dummies and type-casted to integer.
+3. Text Preprocessing
+The data column (SMS messages) underwent several preprocessing steps:
+
+Cleaning: Non-alphabetic characters were removed using regular expressions.
+Lowercasing: All text was converted to lowercase.
+Tokenization: Messages were split into individual words.
+Stopword Removal: Common English stopwords (e.g., 'the', 'is', 'a') were removed.
+Stemming: Words were reduced to their root form using the PorterStemmer (e.g., 'running' -> 'run').
+The preprocessed messages were stored in a list called corpus.
+4. Feature Extraction (Bag of Words)
+The corpus was transformed into a numerical feature matrix X using CountVectorizer with max_features=2500.
+This created a Bag of Words representation, where each message is represented by the frequency of words within its vocabulary.
+5. Data Splitting
+The feature matrix X and the target labels y were split into training and testing sets using train_test_split from sklearn.model_selection.
+A test size of 20% and random_state=0 were used for reproducibility.
+X_train shape: (4457, 2500)
+X_test shape: (1115, 2500)
+y_train shape: (4457,)
+y_test shape: (1115,)
+6. Model Training
+A Multinomial Naive Bayes classifier was chosen for its effectiveness in text classification tasks.
+The classifier was trained using the X_train and y_train data.
+7. Model Evaluation
+Predictions (y_pred) were made on the X_test set.
+The model's performance was evaluated using standard classification metrics:
+Accuracy: 0.9865
+Precision: 0.9632
+Recall: 0.9458
+F1-Score: 0.9544
+Confusion Matrix:
+[[943   6]
+ [  9 157]]
+(True Negatives: 943, False Positives: 6, False Negatives: 9, True Positives: 157)
+8. Example Predictions
+New, unseen messages were preprocessed, vectorized, and fed to the trained model for prediction. The model successfully classified example 'ham' and 'spam' messages:
+
+Original Message	Preprocessed Message	Predicted Label
+Hey, how are you doing today?	hey today	Ham
+Meeting at 3 PM today.	meet pm today	Ham
+WINNER! You have won a free iPhone. Claim now!	winner free iphon claim	Spam
+URGENT! Your account has been suspended. Click here...	urgent account suspend click reactiv	Spam
+Can we catch up tomorrow?	catch tomorrow	Ham
+Free entry to a contest to win cash! Text YES to 8888.	free entri contest win cash text ye	Spam
+Key Findings
+The Multinomial Naive Bayes model achieved high accuracy in distinguishing between ham and spam messages.
+The preprocessing and Bag of Words feature extraction steps were effective in preparing the text data for machine learning.
+Usage
+To run this project:
+
+Ensure you have the spam.csv file in your working directory.
+Install necessary Python libraries: pandas, numpy, nltk, scikit-learn.
+Execute the provided Python code cells sequentially to perform data loading, preprocessing, model training, and evaluation.
